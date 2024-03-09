@@ -1,5 +1,5 @@
 {
-  "name": "proxmox-example",
+  "name": "proxmoxExample",
   "templatesDir": "/var/lib/vz/template/cache",
   "dns": [
     "8.8.8.8",
