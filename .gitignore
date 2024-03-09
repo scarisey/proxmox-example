@@ -1,0 +1,4 @@
+*.qcow2
+*.tar.xz
+scripts/pct-compose.jar
+result

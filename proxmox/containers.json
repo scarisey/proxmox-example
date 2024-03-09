@@ -1,0 +1,75 @@
+{
+  "name": "proxmox-example",
+  "templatesDir": "/var/lib/vz/template/cache",
+  "dns": [
+    "8.8.8.8",
+    "8.8.4.4",
+    "1.1.1.1"
+  ],
+  "network": {
+    "cidr": "192.168.1.0/24",
+    "gateway": "192.168.1.1"
+  },
+  "containers": [
+    {
+      "hostname": "jellyfin",
+      "volumes": [
+        "jellyfindb",
+        "medias"
+      ],
+      "cores": 8,
+      "memory": 8192,
+      "diskSize": 8,
+      "services": [
+        "ssh"
+      ],
+      "template": {
+        "type": "Github",
+        "repo": "scarisey/proxmox-example",
+        "file": "jellyfin.tar.xz",
+        "tag": "latest"
+      }
+    }
+  ],
+  "volumes": [
+    {
+      "name": "jellyfindb",
+      "hostPath": "/var/lib/vz/jellyfin",
+      "mountPath": "/var/lib/jellyfin",
+      "uid": 999,
+      "gid": 999,
+      "perms": "770"
+    },
+    {
+      "name": "medias",
+      "hostPath": "/var/lib/vz/medias/",
+      "mountPath": "/medias",
+      "uid": 999,
+      "gid": 999,
+      "perms": "770"
+    }
+  ],
+  "services": [
+    {
+      "name": "ssh",
+      "nat": {
+        "localPort": 22,
+        "remotePort": 2022
+      }
+    }
+  ],
+  "projections": [
+    {
+      "template": "./nginx/nginx.conf",
+      "target": "/etc/nginx/nginx.conf"
+    },
+    {
+      "template": "./nginx/sites-enabled/default",
+      "target": "/etc/nginx/sites-enabled/default"
+    },
+    {
+      "template": "./nginx/sites-enabled/jellyfin",
+      "target": "/etc/nginx/sites-enabled/jellyfin"
+    }
+  ]
+}
